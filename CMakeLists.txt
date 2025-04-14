@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(QSqlCipher)
+#project(QSqlCipher)
 message(STATUS "Building QSqlCipher plugin for Qt (SqlCipher version 4.6.1 based on SQLite 3.46.1, libtomcrypt version 1.18.2)")
 find_package(Qt6 REQUIRED COMPONENTS Core Sql BuildInternals)
 qt_standard_project_setup()
@@ -46,6 +46,13 @@ qt_add_plugin(QSqlCipherDriverPlugin
         qsql_sqlite_vfs_p.h
         smain.cpp
 )
+
+message("PROJECT_BINARY_DIR: " ${PROJECT_BINARY_DIR})
+
+set_target_properties(QSqlCipherDriverPlugin PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins-bin"
+)
+
 target_compile_definitions(QSqlCipherDriverPlugin
     PRIVATE
         QT_NO_CAST_FROM_ASCII
@@ -103,6 +110,7 @@ target_compile_definitions(QSqlCipherDriverPlugin
         $<$<BOOL:${HAVE_MALLOC_H}>:HAVE_MALLOC_H>
         $<$<BOOL:${HAVE_STDINT_H}>:HAVE_STDINT_H>
         $<$<CONFIG:Release>:NDEBUG>
+        $<$<CONFIG:Debug>:DEBUG_MODE>
 )
 target_include_directories(QSqlCipherDriverPlugin
     PRIVATE
