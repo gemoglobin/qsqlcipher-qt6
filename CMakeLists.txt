@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-#project(QSqlCipher)
+project(QSqlCipher)
 message(STATUS "Building QSqlCipher plugin for Qt (SqlCipher version 4.6.1 based on SQLite 3.46.1, libtomcrypt version 1.18.2)")
 find_package(Qt6 REQUIRED COMPONENTS Core Sql BuildInternals)
 qt_standard_project_setup()
@@ -7,6 +7,14 @@ qt_prepare_standalone_project()
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
+
+
+# (NOT CMAKE_BUILD_TYPE)
+set(CMAKE_BUILD_TYPE "Release")
+#endif()
+message("QSqlCipher Build Type " ${CMAKE_BUILD_TYPE})
+
+
 # All source files are copied from official Qt6 qsqlite plugin directory
 # smain.cpp and sqlite.json are modified to use QSqlCipherDriverPlugin class instead QSQLiteDriverPlugin
 # and QSQLCIPHER plugin key instead QSQLITE
@@ -47,10 +55,10 @@ qt_add_plugin(QSqlCipherDriverPlugin
         smain.cpp
 )
 
-message("PROJECT_BINARY_DIR: " ${PROJECT_BINARY_DIR})
-
+message("QSqlCipher PROJECT_BINARY_DIR: " ${PROJECT_BINARY_DIR})
+message("QSqlCipher LIBRARY_OUTPUT_DIRECTORY:" ${LIBRARY_OUTPUT_DIRECTORY})
 set_target_properties(QSqlCipherDriverPlugin PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/plugins-bin"
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/../plugins-bin"
 )
 
 target_compile_definitions(QSqlCipherDriverPlugin
